@@ -1,6 +1,6 @@
-import type { Metadata, Viewport } from 'next'
-import './globals.css'
-import BottomNavBar from './components/BottomNavBar'
+import type { Metadata, Viewport } from 'next';
+import './globals.css';
+import BottomNavBar from './components/BottomNavBar';
 
 export const metadata: Metadata = {
   title: 'Aurum Trading Terminal',
@@ -11,7 +11,7 @@ export const metadata: Metadata = {
     statusBarStyle: 'black-translucent',
     title: 'Aurum Terminal',
   },
-}
+};
 
 export const viewport: Viewport = {
   width: 'device-width',
@@ -19,12 +19,12 @@ export const viewport: Viewport = {
   maximumScale: 1,
   userScalable: false,
   themeColor: '#000000',
-}
+};
 
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
   return (
     <html lang="en">
@@ -38,5 +38,5 @@ export default function RootLayout({
         <BottomNavBar />
       </body>
     </html>
-  )
+  );
 }

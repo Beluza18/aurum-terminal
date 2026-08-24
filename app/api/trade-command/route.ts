@@ -66,7 +66,7 @@ export async function POST(request: Request) {
     });
     
   } catch (error: any) {
-    console.error('❌ API Error:', error);
+    console.error(' API Error:', error);
     return NextResponse.json({ 
       success: false, 
       error: error.message 
