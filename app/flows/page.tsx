@@ -2,11 +2,14 @@
 
 import BottomNavBar from '../components/BottomNavBar';
 
-export default function FlowsPage() {
-  // Explicitly tell TypeScript this can be one of three values
-  const currentSentiment: 'Bullish' | 'Neutral' | 'Bearish' = 'Bullish'; 
+// Explicitly define the allowed values for TypeScript
+type Sentiment = 'Bullish' | 'Neutral' | 'Bearish';
 
-  const getSentimentDotPosition = () => {
+export default function FlowsPage() {
+  // Use the defined type
+  const currentSentiment: Sentiment = 'Bullish'; 
+
+  const getSentimentDotPosition = (): string => {
     if (currentSentiment === 'Bullish') return '85%';
     if (currentSentiment === 'Neutral') return '50%';
     return '15%';
