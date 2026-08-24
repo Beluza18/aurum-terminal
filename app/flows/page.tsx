@@ -3,8 +3,8 @@
 import BottomNavBar from '../components/BottomNavBar';
 
 export default function FlowsPage() {
-  // Current market sentiment state (Change this to 'Neutral' or 'Bearish' to test colors)
-  const currentSentiment = 'Bullish'; 
+  // Explicitly tell TypeScript this can be one of three values
+  const currentSentiment: 'Bullish' | 'Neutral' | 'Bearish' = 'Bullish'; 
 
   const getSentimentDotPosition = () => {
     if (currentSentiment === 'Bullish') return '85%';
@@ -18,7 +18,7 @@ export default function FlowsPage() {
       margin: '0 auto', 
       padding: '24px 16px 140px 16px',
       minHeight: '100vh',
-      backgroundColor: '#f0f0f0' // Light gray main background
+      backgroundColor: '#f0f0f0'
     }}>
       {/* Header */}
       <div style={{ marginBottom: '24px' }}>
@@ -96,7 +96,7 @@ export default function FlowsPage() {
           {/* Non-Commercials */}
           <div style={{ 
             padding: '16px 20px', 
-            backgroundColor: '#d1fae5', // Light Green-100
+            backgroundColor: '#d1fae5',
             borderRadius: '12px',
             border: '1px solid #a7f3d0',
             display: 'flex',
@@ -113,7 +113,7 @@ export default function FlowsPage() {
           {/* Commercials */}
           <div style={{ 
             padding: '16px 20px', 
-            backgroundColor: '#fee2e2', // Light Red-100
+            backgroundColor: '#fee2e2',
             borderRadius: '12px',
             border: '1px solid #fca5a5',
             display: 'flex',
