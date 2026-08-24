@@ -82,11 +82,11 @@ export default function TraderPage() {
     setActiveSymbol(newSymbol);
   };
 
-  // ⚡ CLOUD-BASED TRADE EXECUTION
+  // ⚡ CLOUD-BASED TRADE EXECUTION (Strictly uses /api/trade-command)
   const sendCommand = async (action: string, ticket: number = 0, sl: number = 0, tp: number = 0, lots?: number, tradeType?: string) => {
     setIsExecuting(true);
     try {
-      let lotsToSend = lots !== undefined ? lots : selectedLot;
+      let lotsToSend: string | number = lots !== undefined ? lots : selectedLot;
       let ticketToSend = ticket || 0;
 
       // MT4 EA expects the trade type (BUY/SELL) in the 'lots' position for MODIFY_ALL
@@ -104,12 +104,17 @@ export default function TraderPage() {
         ticket: ticketToSend 
       };
 
+      console.log('🚀 SENDING TO SUPABASE:', commandData);
+      console.log('🎯 Endpoint: /api/trade-command');
+
       const res = await fetch('/api/trade-command', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(commandData)
       });
+      
       const data = await res.json();
+      console.log('📥 RESPONSE FROM API:', data);
       
       if (data.success) {
         toast.success(`${action} command sent to MT4!`);
@@ -117,8 +122,9 @@ export default function TraderPage() {
       } else {
         toast.error(`Failed: ${data.error}`);
       }
-    } catch (e) { 
-      toast.error('Network error'); 
+    } catch (e: any) { 
+      console.error('❌ Network error:', e);
+      toast.error('Network error: ' + e.message); 
     } finally { 
       setIsExecuting(false); 
     }
