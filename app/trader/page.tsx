@@ -82,18 +82,29 @@ export default function TraderPage() {
     setActiveSymbol(newSymbol);
   };
 
+  // ⚡ CLOUD-BASED TRADE EXECUTION
   const sendCommand = async (action: string, ticket: number = 0, sl: number = 0, tp: number = 0, lots?: number, tradeType?: string) => {
     setIsExecuting(true);
     try {
-      const commandData: any = { action, symbol: activeSymbol, sl: sl || 0, tp: tp || 0, ticket: ticket || 0 };
+      let lotsToSend = lots !== undefined ? lots : selectedLot;
+      let ticketToSend = ticket || 0;
+
+      // MT4 EA expects the trade type (BUY/SELL) in the 'lots' position for MODIFY_ALL
       if (action === 'MODIFY_ALL') {
-        commandData.tradeType = tradeType;
-        commandData.lots = 0;
-      } else {
-        commandData.lots = lots !== undefined ? lots : selectedLot;
+        lotsToSend = tradeType || 'BUY'; 
+        ticketToSend = 0;
       }
 
-      const res = await fetch('/api/trade/execute', {
+      const commandData = { 
+        action, 
+        symbol: activeSymbol, 
+        lots: lotsToSend, 
+        sl: sl || 0, 
+        tp: tp || 0, 
+        ticket: ticketToSend 
+      };
+
+      const res = await fetch('/api/trade-command', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(commandData)
@@ -101,7 +112,7 @@ export default function TraderPage() {
       const data = await res.json();
       
       if (data.success) {
-        toast.success(`${action} command sent!`);
+        toast.success(`${action} command sent to MT4!`);
         setTimeout(() => fetchData(), 1500);
       } else {
         toast.error(`Failed: ${data.error}`);
@@ -137,7 +148,6 @@ export default function TraderPage() {
     if (!window.confirm(confirmMessage)) return;
 
     if (applyToAll) {
-      // Send ONE command. MT4 will handle the loop internally. 100% reliable.
       await sendCommand('MODIFY_ALL', 0, newSL, newTP || modifyingTrade.tp, 0, modifyingTrade.type);
     } else {
       await sendCommand('MODIFY', modifyingTrade.ticket, newSL, newTP || modifyingTrade.tp);
