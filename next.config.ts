@@ -3,13 +3,19 @@ import type { NextConfig } from 'next';
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   typescript: {
-    ignoreBuildErrors: true,  // This will skip TypeScript errors during build
-  },
-  eslint: {
-    ignoreDuringBuilds: true,  // This will skip ESLint errors
+    // Ignore TypeScript errors during build (useful for quick deployments)
+    ignoreBuildErrors: true,
   },
   images: {
-    domains: ['rasbnfvatyqyfebreslw.supabase.co'],
+    // Updated to remotePatterns for better security and to remove the deprecation warning
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'rasbnfvatyqyfebreslw.supabase.co',
+        port: '',
+        pathname: '/**',
+      },
+    ],
   },
 };
 
